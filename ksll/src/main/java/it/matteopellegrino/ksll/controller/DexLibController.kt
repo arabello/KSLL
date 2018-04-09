@@ -14,7 +14,7 @@ import java.net.URL
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-internal class DexLibController(context: Context) : AbstractLibController(context) {
+class DexLibController(context: Context) : AbstractLibController(context) {
     override val LIB_DIRNAME: String = "dexlib"
     override val DEFAULT_LIB_FILENAME: String = "ksla.dex"
     override val DEFAULT_SAP_FILENAME: String = "sapclassname"

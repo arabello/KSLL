@@ -14,7 +14,7 @@ import java.net.URL
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-internal abstract class AbstractLibController(context: Context) : LibController{
+abstract class AbstractLibController(context: Context) : LibController{
     final override val BASE_LIB_DIRNAME: String = context.filesDir.absolutePath + File.separator + "ksll"
     abstract val LIB_DIRNAME: String
     abstract val DEFAULT_LIB_FILENAME: String

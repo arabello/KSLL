@@ -9,7 +9,7 @@ import java.net.URL
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-internal interface LibController {
+interface LibController {
     /**
      * Parent path containing all [Lib] currently available locally
      */
