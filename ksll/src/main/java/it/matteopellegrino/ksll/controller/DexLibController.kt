@@ -24,10 +24,11 @@ internal class DexLibController(context: Context) : AbstractLibController(contex
         dexDir.mkdir()
     }
 
-    override fun load(existingLib: Lib): Class<*>? =
-        if (!existingLib.file.exists())
+    override fun loadSAP(libFile: File, sapFile: File): Class<*>? =
+        if (!libFile.exists() || !sapFile.exists())
             null
         else
-            DexClassLoader(existingLib.file.absolutePath, dexDir.absolutePath, null, javaClass.classLoader)
-                .loadClass(existingLib.SAPClassName)
+             DexClassLoader(libFile.absolutePath, dexDir.absolutePath, null, javaClass.classLoader)
+                    .loadClass(sapFile.readText())
+
 }

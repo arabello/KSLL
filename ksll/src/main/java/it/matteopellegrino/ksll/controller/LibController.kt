@@ -1,6 +1,7 @@
 package it.matteopellegrino.ksll.controller
 
 import it.matteopellegrino.ksll.model.Lib
+import it.matteopellegrino.ksll.model.RemoteLib
 import java.net.URL
 
 /**
@@ -15,24 +16,23 @@ internal interface LibController {
     val BASE_LIB_DIRNAME: String
 
     /**
-     * Async download a file from [url], store it and
+     * Async download a file from [RemoteLib.url], store it and
      * return the corresponding [Lib] representation
      *
-     * @param url Over which the http is elaborated
-     * @param SAPClassName Used to instance [Lib],
-     * should be valid for the application context
+     * @param remoteLib Containing all info to accomplish the download and the SAP class loading
      * @param success Callback function with a [Lib] param for the downloaded lib
      * @param failure Callback for errors
      */
-    fun download(url: URL, SAPClassName: String, success: (lib: Lib) -> Unit = {}, failure: () -> Unit = {})
+    fun download(remoteLib: RemoteLib, success: (lib: Lib) -> Unit = {}, failure: () -> Unit = {})
 
     /**
-     * Search into local storage for a [Lib] that should be
-     * available remotely by [url]
+     * Search in the local storage if a [Lib]
+     * corresponding to the remote one is available
      *
-     * @param url Used to match the [Lib.file] path
+     * @param remoteLib The remote lib that should is stored locally
+     * @return A [Lib] representation or null if [remoteLib] is not available locally
      */
-    fun find(url: URL) : Lib?
+    fun find(remoteLib: RemoteLib) : Lib?
 
     /**
      * Try to [LibController.find] a library locally.
@@ -40,12 +40,11 @@ internal interface LibController {
      *
      * The [success] callback works for both case, [failure] as well.
      *
-     * @param url Used to match the [Lib.file] path
-     * @param SAPClassName Used to instance [Lib] should be valid for the application context
+     * @param remoteLib Containing all info to accomplish the [download] or [find]
      * @param success Callback function with a [Class] param for the sap class from the retrieved lib
      * @param failure Callback for errors
      */
-    fun retrieve(url: URL, SAPClassName: String, success: (lib: Lib) -> Unit = {}, failure: () -> Unit = {})
+    fun retrieve(remoteLib: RemoteLib, success: (lib: Lib) -> Unit = {}, failure: () -> Unit = {})
 
     /**
      * Delete all files and directories concerned by
@@ -58,13 +57,7 @@ internal interface LibController {
     fun wipe(existingLib: Lib): Boolean
 
     /**
-     * Search from the local storage the [Lib.file],
-     * if it exits try to load the SAP class using [Lib.SAPClassName].
-     * The strategy used depends by the controller implementation,
-     * in order to provide different type of libs such as dex or jar.
-     *
-     * @param existingLib The [Lib] you want to load
-     * @return Whatever type of class loaded, null if an error occurred
+     * Execute [wipe] converting the given [RemoteLib] to the local representation [Lib]
      */
-    fun load(existingLib: Lib): Class<*>?
+    fun wipe(remoteLib: RemoteLib): Boolean
 }
