@@ -1,6 +1,7 @@
 package it.matteopellegrino.ksll.controller
 
 import it.matteopellegrino.ksll.model.Lib
+import it.matteopellegrino.ksll.model.LibExtension
 import it.matteopellegrino.ksll.model.RemoteLib
 import java.net.URL
 
@@ -9,7 +10,7 @@ import java.net.URL
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-interface LibController {
+internal interface LibController {
     /**
      * Parent path containing all [Lib] currently available locally
      */
@@ -20,7 +21,7 @@ interface LibController {
      * This property contains the extension name that the implemented controller
      * is able to resolve. Class loading depends on this.
      */
-    val LIB_EXTENSION: String
+    val LIB_EXTENSION: LibExtension
 
     /**
      * Async download a file from [RemoteLib.url], store it and

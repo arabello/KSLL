@@ -1,4 +1,4 @@
-package it.matteopellegrino.ksll.controller
+package it.matteopellegrino.ksll.api
 
 import android.util.Log
 import com.github.kittinunf.fuel.android.extension.responseJson
@@ -10,13 +10,12 @@ import org.json.JSONObject
 import java.net.URL
 
 /**
- * Implement [ApiController] to dialog with a RESTful web server
- * that provides a JSON response. This should be the default
- * controller for the reliability of the REST/JSON technology
+ * Implement [ApiManager] to dialog with a RESTful web server
+ * that provides a JSON response
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-class RESTController : ApiController{
+final class RESTManager : ApiManager {
     override fun retrieveAvailableAPI(url: URL, success: (remoteLibs: List<RemoteLib>) -> Unit, failure: () -> Unit) {
         url.toString().httpGet().responseJson { _, _, result ->
             when(result){

@@ -6,6 +6,7 @@ import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
 import dalvik.system.DexClassLoader
 import it.matteopellegrino.ksll.model.Lib
+import it.matteopellegrino.ksll.model.LibExtension
 import java.io.File
 import java.net.URL
 
@@ -14,8 +15,8 @@ import java.net.URL
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-class DexLibController(context: Context) : AbstractLibController(context) {
-    override val LIB_EXTENSION: String = "dex"
+internal class DexLibController(context: Context) : AbstractLibController(context) {
+    override val LIB_EXTENSION: LibExtension = LibExtension.DEX
     private val dexDir = File(context.cacheDir, "dex")
 
     init{

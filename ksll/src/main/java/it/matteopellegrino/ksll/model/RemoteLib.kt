@@ -14,4 +14,4 @@ import java.net.URL
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-data class RemoteLib(val url: URL, val SAPClassName: String, val version: String, val extension: String)
+data class RemoteLib(val url: URL, val SAPClassName: String, val version: String, val extension: LibExtension)

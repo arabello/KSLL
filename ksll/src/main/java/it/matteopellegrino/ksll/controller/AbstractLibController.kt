@@ -17,11 +17,11 @@ import java.net.URL
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-abstract class AbstractLibController(context: Context) : LibController{
+internal abstract class AbstractLibController(context: Context) : LibController{
     final override val BASE_LIB_DIRNAME: String = context.filesDir.absolutePath + File.separator + "ksll"
     val DEFAULT_SAP_FILENAME: String = "sapclassname"
 
-    private fun resolveCtrlLibDir(): File = File(BASE_LIB_DIRNAME, LIB_EXTENSION)
+    private fun resolveCtrlLibDir(): File = File(BASE_LIB_DIRNAME, LIB_EXTENSION.toString())
 
     private fun URL.toDirPath(): String = protocol + File.separator + host + File.separator + port + File.separator + path
 

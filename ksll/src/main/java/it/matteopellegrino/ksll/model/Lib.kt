@@ -14,4 +14,4 @@ import java.io.File
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-data class Lib(val file: File, val SAPClass: Class<*>, val version: String, val extension: String)
+data class Lib(val file: File, val SAPClass: Class<*>, val version: String, val extension: LibExtension)
