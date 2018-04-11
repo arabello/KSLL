@@ -10,7 +10,9 @@ import org.json.JSONObject
 import java.net.URL
 
 /**
- * TODO: Add class description
+ * Implement [ApiController] to dialog with a RESTful web server
+ * that provides a JSON response. This should be the default
+ * controller for the reliability of the REST/JSON technology
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */

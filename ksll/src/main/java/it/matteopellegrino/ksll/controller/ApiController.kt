@@ -4,7 +4,10 @@ import it.matteopellegrino.ksll.model.RemoteLib
 import java.net.URL
 
 /**
- * TODO: Add class description
+ * An implementation of this interfaces works for a specific
+ * type of web server that provides an API about libraries that
+ * can be downloaded. The implementation should work based on a
+ * non written contract, such as the structure and the content of the response
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
