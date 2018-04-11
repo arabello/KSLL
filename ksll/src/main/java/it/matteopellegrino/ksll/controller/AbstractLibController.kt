@@ -10,17 +10,19 @@ import java.io.File
 import java.net.URL
 
 /**
- * TODO: Add class description
+ * This abstract controller implement all methods common
+ * between different implementation of [LibController].
+ * An implementation should extends this class and provide
+ * all non implemented methods and property.
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
 abstract class AbstractLibController(context: Context) : LibController{
     final override val BASE_LIB_DIRNAME: String = context.filesDir.absolutePath + File.separator + "ksll"
-    abstract val LIB_DIRNAME: String
     abstract val DEFAULT_LIB_FILENAME: String
     abstract val DEFAULT_SAP_FILENAME: String
 
-    private fun resolveCtrlLibDir(): File = File(BASE_LIB_DIRNAME, LIB_DIRNAME)
+    private fun resolveCtrlLibDir(): File = File(BASE_LIB_DIRNAME, LIB_EXTENSION)
 
     private fun URL.toDirPath(): String = protocol + File.separator + host + File.separator + port + File.separator + path
 

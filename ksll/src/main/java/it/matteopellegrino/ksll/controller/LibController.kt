@@ -5,7 +5,7 @@ import it.matteopellegrino.ksll.model.RemoteLib
 import java.net.URL
 
 /**
- * Define the API for a generic controller that manages [Lib]
+ * Define the API for a generic controller that resolve [RemoteLib]s
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
@@ -14,6 +14,13 @@ interface LibController {
      * Parent path containing all [Lib] currently available locally
      */
     val BASE_LIB_DIRNAME: String
+
+    /**
+     * A [RemoteLib] can be different kind of library such as .jar or .dex.
+     * This property contains the extension name that the implemented controller
+     * is able to resolve. Class loading depends on this.
+     */
+    val LIB_EXTENSION: String
 
     /**
      * Async download a file from [RemoteLib.url], store it and
