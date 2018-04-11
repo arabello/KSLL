@@ -6,7 +6,8 @@ package it.matteopellegrino.ksll.model
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
 enum class LibExtension(private val value: String) {
-    DEX("dex");
+    DEX("dex"),
+    JAR("jar");
 
     companion object {
         fun from(s: String): LibExtension? = values().find { it.value == s }

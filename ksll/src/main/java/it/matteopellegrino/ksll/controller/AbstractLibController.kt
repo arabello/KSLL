@@ -5,6 +5,7 @@ import android.util.Log
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
 import it.matteopellegrino.ksll.model.Lib
+import it.matteopellegrino.ksll.model.LibExtension
 import it.matteopellegrino.ksll.model.RemoteLib
 import java.io.File
 import java.net.URL
@@ -25,7 +26,7 @@ internal abstract class AbstractLibController(context: Context) : LibController{
 
     private fun URL.toDirPath(): String = protocol + File.separator + host + File.separator + port + File.separator + path
 
-    private fun resolveLibFile(remoteLib: RemoteLib): File = File(File(resolveCtrlLibDir(), remoteLib.url.toDirPath()), remoteLib.version)
+    private fun resolveLibFile(remoteLib: RemoteLib): File = File(File(resolveCtrlLibDir(), remoteLib.url.toDirPath()), "${remoteLib.version}.${remoteLib.extension}")
     private fun resolveSapFile(url: URL): File = File(File(resolveCtrlLibDir(), url.toDirPath()), DEFAULT_SAP_FILENAME)
 
     abstract fun loadSAP(libFile: File, sapFile: File): Class<*>?
@@ -65,7 +66,8 @@ internal abstract class AbstractLibController(context: Context) : LibController{
         if (!sapFile.exists()) return null
 
         val sap = loadSAP(file, sapFile)
-        return if (sap == null) null else Lib(file, sap, remoteLib.version, remoteLib.extension)
+        val ext = LibExtension.from(file.extension)
+        return if (sap == null || ext == null) null else Lib(file, sap, file.nameWithoutExtension, ext)
     }
 
     final override fun retrieve(remoteLib: RemoteLib, success: (lib: Lib) -> Unit, failure: () -> Unit) {

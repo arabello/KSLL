@@ -16,9 +16,9 @@ class MainActivity : AppCompatActivity() {
         val url = URL("http://192.168.1.150:8080")
         val ksll = Ksll(this, RESTManager())
 
-        ksll.load(url, { lib ->
+        ksll.multipleLoad(url, { lib ->
             val sap = lib.SAPClass.newInstance()
-            textView.text = lib.SAPClass.getMethod("echo", String::class.java).invoke(sap, "The magic!") as String
+            println(lib.SAPClass.getMethod("echo", String::class.java).invoke(sap, "The magic!") as String)
         }, {
             error("Error cannot retrieve")
         }, true)

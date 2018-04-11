@@ -19,6 +19,7 @@ internal class Factory(private val context: Context) {
     fun forExtension(extension: LibExtension): LibController{
         return when(extension){
             LibExtension.DEX -> DexLibController(context)
+            LibExtension.JAR -> JarLibController(context)
         }
     }
 }
