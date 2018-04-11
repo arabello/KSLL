@@ -4,6 +4,7 @@ import android.util.Log
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
+import it.matteopellegrino.ksll.model.LibExtension
 import it.matteopellegrino.ksll.model.RemoteLib
 import org.json.JSONException
 import org.json.JSONObject
@@ -30,7 +31,7 @@ final class RESTManager : ApiManager {
                     fun jsonToRemoteLib(obj: JSONObject): RemoteLib = RemoteLib(URL(obj.getString("url")),
                             obj.getString("sapclassName"),
                             obj.getString("version"),
-                            obj.getString("extension"))
+                            LibExtension.valueOf(obj.getString("extension")))
 
 
                     try{
