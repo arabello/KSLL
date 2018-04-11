@@ -32,19 +32,19 @@ abstract class AbstractLibController(context: Context) : LibController{
 
     final override fun download(remoteLib: RemoteLib, success: (lib: Lib) -> Unit, failure: () -> Unit) {
         remoteLib.url.toString().httpGet().response{ _, response, result ->
-            Log.d(javaClass.name, "Response ready: ${result.component2()}" )
+            Log.d(javaClass.simpleName, "Response ready: ${result.component2()}" )
             when(result){
                 is Result.Failure -> {
-                    Log.e(javaClass.name, response.responseMessage)
+                    Log.e(javaClass.simpleName, response.responseMessage)
                     failure()
                 }
                 is Result.Success -> {
                     val libFile = resolveLibFile(remoteLib)
-                    Log.d(javaClass.name, "Creating '$libFile'")
+                    Log.d(javaClass.simpleName, "Creating '$libFile'")
                     libFile.parentFile.mkdirs()
                     libFile.writeBytes(result.get())
                     val sapFile = resolveSapFile(remoteLib.url)
-                    Log.d(javaClass.name, "Creating '$sapFile'")
+                    Log.d(javaClass.simpleName, "Creating '$sapFile'")
                     sapFile.printWriter().use { it.print(remoteLib.SAPClassName) }
 
 
@@ -71,10 +71,10 @@ abstract class AbstractLibController(context: Context) : LibController{
     final override fun retrieve(remoteLib: RemoteLib, success: (lib: Lib) -> Unit, failure: () -> Unit) {
         val lib = find(remoteLib)
         if (lib == null) {
-            Log.d(javaClass.name, "Lib $remoteLib doest not exist locally. Downloading..." )
+            Log.d(javaClass.simpleName, "Lib $remoteLib doest not exist locally. Downloading..." )
             download(remoteLib, success, failure)
         }else {
-            Log.d(javaClass.name, "Lib $remoteLib ready locally. Loading..." )
+            Log.d(javaClass.simpleName, "Lib $remoteLib ready locally. Loading..." )
             success(lib)
         }
     }
