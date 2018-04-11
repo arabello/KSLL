@@ -14,18 +14,11 @@ internal class Factory(private val context: Context) {
      * Find the correct [LibController] based on [extension] of the library
      * you want to resolve
      *
-     * @param extension A file extension without the dot
+     * @param extension A file extension supported
      */
-    fun forExtension(extension: String): LibController?{
-        return try{
-            val ext = LibExtension.from(extension)
-
-            when(ext){
-                LibExtension.DEX -> DexLibController(context)
-                else -> null
-            }
-        }catch (e: IllegalArgumentException){
-            null
+    fun forExtension(extension: LibExtension): LibController{
+        return when(extension){
+            LibExtension.DEX -> DexLibController(context)
         }
     }
 }
