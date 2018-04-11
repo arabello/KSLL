@@ -28,10 +28,13 @@ final class RESTManager : ApiManager {
                 is Result.Success -> {
                     Log.d(javaClass.simpleName, "Http request success! Elaborating...")
 
-                    fun jsonToRemoteLib(obj: JSONObject): RemoteLib = RemoteLib(URL(obj.getString("url")),
-                            obj.getString("sapclassName"),
-                            obj.getString("version"),
-                            LibExtension.valueOf(obj.getString("extension")))
+                    fun jsonToRemoteLib(obj: JSONObject): RemoteLib {
+                        val ext = LibExtension.from(obj.getString("extension")) ?: throw JSONException("Cannot resolve 'extension' value")
+
+                        return RemoteLib(URL(obj.getString("url")),
+                                obj.getString("sapclassName"),
+                                obj.getString("version"), ext)
+                    }
 
 
                     try{

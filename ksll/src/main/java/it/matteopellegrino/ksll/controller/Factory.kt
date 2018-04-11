@@ -18,10 +18,11 @@ internal class Factory(private val context: Context) {
      */
     fun forExtension(extension: String): LibController?{
         return try{
-            val ext = LibExtension.valueOf(extension)
+            val ext = LibExtension.from(extension)
 
             when(ext){
                 LibExtension.DEX -> DexLibController(context)
+                else -> null
             }
         }catch (e: IllegalArgumentException){
             null
