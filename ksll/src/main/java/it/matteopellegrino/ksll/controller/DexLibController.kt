@@ -16,8 +16,6 @@ import java.net.URL
  */
 class DexLibController(context: Context) : AbstractLibController(context) {
     override val LIB_EXTENSION: String = "dex"
-    override val DEFAULT_LIB_FILENAME: String = "ksla.dex"
-    override val DEFAULT_SAP_FILENAME: String = "sapclassname"
     private val dexDir = File(context.cacheDir, "dex")
 
     init{

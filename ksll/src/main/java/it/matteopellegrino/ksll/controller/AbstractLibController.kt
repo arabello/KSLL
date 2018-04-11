@@ -19,14 +19,13 @@ import java.net.URL
  */
 abstract class AbstractLibController(context: Context) : LibController{
     final override val BASE_LIB_DIRNAME: String = context.filesDir.absolutePath + File.separator + "ksll"
-    abstract val DEFAULT_LIB_FILENAME: String
-    abstract val DEFAULT_SAP_FILENAME: String
+    val DEFAULT_SAP_FILENAME: String = "sapclassname"
 
     private fun resolveCtrlLibDir(): File = File(BASE_LIB_DIRNAME, LIB_EXTENSION)
 
     private fun URL.toDirPath(): String = protocol + File.separator + host + File.separator + port + File.separator + path
 
-    private fun resolveLibFile(url: URL): File = File(File(resolveCtrlLibDir(), url.toDirPath()), DEFAULT_LIB_FILENAME)
+    private fun resolveLibFile(remoteLib: RemoteLib): File = File(File(resolveCtrlLibDir(), remoteLib.url.toDirPath()), remoteLib.version)
     private fun resolveSapFile(url: URL): File = File(File(resolveCtrlLibDir(), url.toDirPath()), DEFAULT_SAP_FILENAME)
 
     abstract fun loadSAP(libFile: File, sapFile: File): Class<*>?
@@ -40,7 +39,7 @@ abstract class AbstractLibController(context: Context) : LibController{
                     failure()
                 }
                 is Result.Success -> {
-                    val libFile = resolveLibFile(remoteLib.url)
+                    val libFile = resolveLibFile(remoteLib)
                     Log.d(javaClass.name, "Creating '$libFile'")
                     libFile.parentFile.mkdirs()
                     libFile.writeBytes(result.get())
@@ -53,20 +52,20 @@ abstract class AbstractLibController(context: Context) : LibController{
                     if (sap == null)
                         failure()
                     else
-                        success(Lib(libFile, sap))
+                        success(Lib(libFile, sap, remoteLib.version, remoteLib.extension))
                 }
             }
         }
     }
 
     final override fun find(remoteLib: RemoteLib): Lib? {
-        val file = resolveLibFile(remoteLib.url)
+        val file = resolveLibFile(remoteLib)
         if (!file.exists()) return null
         val sapFile = resolveSapFile(remoteLib.url)
         if (!sapFile.exists()) return null
 
         val sap = loadSAP(file, sapFile)
-        return if (sap == null) null else Lib(file, sap)
+        return if (sap == null) null else Lib(file, sap, remoteLib.version, remoteLib.extension)
     }
 
     final override fun retrieve(remoteLib: RemoteLib, success: (lib: Lib) -> Unit, failure: () -> Unit) {
