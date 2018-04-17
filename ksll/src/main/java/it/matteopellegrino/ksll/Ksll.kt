@@ -34,7 +34,6 @@ class Ksll(private val context: Context, private val manager: ApiManager){
             remoteLibs.forEach {remoteLib ->
                 val ctrl = Factory(context).forExtension(remoteLib.extension)
                 ctrl.retrieve(remoteLib, {lib ->
-                    println("${remoteLib.extension} ${lib.version != remoteLib.version}")
                     if (shouldUpdate && lib.version != remoteLib.version)
                         ctrl.download(remoteLib, success, failure)
                     else

@@ -17,11 +17,11 @@ internal interface LibController {
     val BASE_LIB_DIRNAME: String
 
     /**
-     * A [RemoteLib] can be different kind of library such as .jar or .dex.
-     * This property contains the extension name that the implemented controller
+     * A [RemoteLib] can be different kind of library such as .jar, .dex, .zip or .apk
+     * This property contains the extensions name that the implemented controller
      * is able to resolve. Class loading depends on this.
      */
-    val LIB_EXTENSION: LibExtension
+    val SUPPORTED_EXTENSIONS: List<LibExtension>
 
     /**
      * Async download a file from [RemoteLib.url], store it and

@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         ksll.multipleLoad(url, { lib ->
             val sap = lib.SAPClass.newInstance()
-            println(lib.SAPClass.getMethod("echo", String::class.java).invoke(sap, "The magic!") as String)
+            println(lib.SAPClass.name)
         }, {
             error("Error cannot retrieve")
         }, true)

@@ -18,16 +18,14 @@ import java.net.URL
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-internal abstract class AbstractLibController(context: Context) : LibController{
+internal abstract class AbstractController(context: Context) : LibController{
     final override val BASE_LIB_DIRNAME: String = context.filesDir.absolutePath + File.separator + "ksll"
     val DEFAULT_SAP_FILENAME: String = "sapclassname"
 
-    private fun resolveCtrlLibDir(): File = File(BASE_LIB_DIRNAME, LIB_EXTENSION.toString())
-
     private fun URL.toDirPath(): String = protocol + File.separator + host + File.separator + port + File.separator + path
 
-    private fun resolveLibFile(remoteLib: RemoteLib): File = File(File(resolveCtrlLibDir(), remoteLib.url.toDirPath()), "${remoteLib.version}.${remoteLib.extension}")
-    private fun resolveSapFile(url: URL): File = File(File(resolveCtrlLibDir(), url.toDirPath()), DEFAULT_SAP_FILENAME)
+    private fun resolveLibFile(remoteLib: RemoteLib): File = File(BASE_LIB_DIRNAME,remoteLib.url.toDirPath() + File.separator + "${remoteLib.version}.${remoteLib.extension}")
+    private fun resolveSapFile(url: URL): File = File(BASE_LIB_DIRNAME, url.toDirPath() + File.separator + DEFAULT_SAP_FILENAME)
 
     abstract fun loadSAP(libFile: File, sapFile: File): Class<*>?
 
