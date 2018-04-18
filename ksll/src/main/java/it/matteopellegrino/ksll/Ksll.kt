@@ -1,16 +1,16 @@
 package it.matteopellegrino.ksll
 
 import android.content.Context
-import it.matteopellegrino.ksll.api.ApiManager
+import it.matteopellegrino.ksll.apimanager.ServerManager
 import it.matteopellegrino.ksll.controller.Factory
 import it.matteopellegrino.ksll.model.Lib
 import java.net.URL
 
 /**
  * Top level class entry point. A instance of this class expose the functionality of all
- * Kotlin Safety Library Loader module. The [manager] is an implementation of [ApiManager]
+ * Kotlin Safety Library Loader module. The [manager] is an implementation of [ServerManager]
  * used to dialog with the server. For classic usage you can use default implementation
- * provided by [it.matteopellegrino.ksll.api] package.
+ * provided by [it.matteopellegrino.ksll.apimanager] package.
  * You can provide your own implementation, according to the server you are working with.
  *
  * @param context Android [Context] from which the class is instanced
@@ -18,7 +18,7 @@ import java.net.URL
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-class Ksll(private val context: Context, private val manager: ApiManager){
+class Ksll(private val context: Context, private val manager: ServerManager){
     /**
      * Retrieve all libraries exposed at [url]. If [shouldUpdate] is true, then a version checking will performed
      * and each library may be updated.

@@ -3,8 +3,7 @@ package it.matteopellegrino.ksll.sample
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import it.matteopellegrino.ksll.Ksll
-import it.matteopellegrino.ksll.api.RESTManager
-import kotlinx.android.synthetic.main.activity_main.*
+import it.matteopellegrino.ksll.apimanager.RESTManager
 import java.net.URL
 
 class MainActivity : AppCompatActivity() {

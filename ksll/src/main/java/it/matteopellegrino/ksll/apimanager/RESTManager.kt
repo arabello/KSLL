@@ -1,4 +1,4 @@
-package it.matteopellegrino.ksll.api
+package it.matteopellegrino.ksll.apimanager
 
 import android.util.Log
 import com.github.kittinunf.fuel.android.extension.responseJson
@@ -11,12 +11,12 @@ import org.json.JSONObject
 import java.net.URL
 
 /**
- * Implement [ApiManager] to dialog with a RESTful web server
+ * Implement [ServerManager] to dialog with a RESTful web server
  * that provides a JSON response
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-final class RESTManager : ApiManager {
+final class RESTManager : ServerManager {
     override fun retrieveAvailableAPI(url: URL, success: (remoteLibs: List<RemoteLib>) -> Unit, failure: () -> Unit) {
         url.toString().httpGet().responseJson { _, _, result ->
             when(result){
