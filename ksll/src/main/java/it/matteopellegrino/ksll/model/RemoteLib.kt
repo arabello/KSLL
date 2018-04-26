@@ -1,5 +1,6 @@
 package it.matteopellegrino.ksll.model
 
+import java.io.Serializable
 import java.net.URL
 
 /**
@@ -19,4 +20,4 @@ data class RemoteLib(val url: URL,
                      val version: String,
                      val extension: LibExtension,
                      val signature: String,
-                     val publicKey: String)
+                     val publicKey: String): Serializable

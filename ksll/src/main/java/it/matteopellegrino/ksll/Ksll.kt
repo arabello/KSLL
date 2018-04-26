@@ -19,6 +19,9 @@ import java.net.URL
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
 class Ksll(private val context: Context, private val manager: ServerManager){
+    private val ctrl = LibController(context)
+
+
     /**
      * Retrieve all libraries exposed at [url]. If [shouldUpdate] is true, then a version checking will performed
      * and each library may be updated.
@@ -32,7 +35,6 @@ class Ksll(private val context: Context, private val manager: ServerManager){
     fun multipleLoad(url: URL, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit, shouldUpdate: Boolean = false){
         manager.retrieveAvailableAPI(url, {remoteLibs ->
             remoteLibs.forEach {remoteLib ->
-                val ctrl = LibController(context)
                 ctrl.retrieve(remoteLib, {lib ->
                     if (shouldUpdate && lib.version != remoteLib.version)
                         ctrl.download(remoteLib, success, failure)
@@ -56,13 +58,26 @@ class Ksll(private val context: Context, private val manager: ServerManager){
     fun load(url: URL, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit, shouldUpdate: Boolean = false){
         manager.retrieveAvailableAPI(url, {remoteLibs ->
             val remoteLib = remoteLibs.first()
-            val ctrl = LibController(context)
             ctrl.retrieve(remoteLib, { lib ->
-                if (shouldUpdate && lib.file.nameWithoutExtension != remoteLib.version)
+                if (shouldUpdate && lib.version != remoteLib.version)
                     ctrl.download(remoteLib, success, failure)
                 else
                     success(lib)
             }, failure)
         }, failure)
+    }
+
+    /**
+     * TODO
+     */
+    fun availableLibs(): List<Lib> = ctrl.availableLibs()
+
+    /**
+     * TODO
+     */
+    fun availableSAP(): List<Class<*>> {
+        val list: MutableList<Class<*>> = arrayListOf()
+        ctrl.availableLibs().forEach { list.add(it.SAPClass) }
+        return list
     }
 }

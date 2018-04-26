@@ -24,7 +24,7 @@ internal interface Controller {
     fun retrieve(remoteLib: RemoteLib, success: (lib: Lib) -> Unit = {}, failure: (cause: Failure) -> Unit = {})
 
     /**
-     * Async download a file from [RemoteLib.url], store it and
+     * Async download a path from [RemoteLib.url], store it and
      * return the corresponding [Lib] representation
      *
      * @param remoteLib Containing all info to accomplish the download and the SAP class loading
@@ -50,12 +50,7 @@ internal interface Controller {
      * this action has no effect
      * @return The outcome of the operation as boolean
      */
-    fun wipe(existingLib: Lib): Boolean
-
-    /**
-     * Execute [wipe] converting the given [RemoteLib] to the local representation [Lib]
-     */
-    fun wipe(remoteLib: RemoteLib): Boolean
+    fun wipe(existingLib: RemoteLib): Boolean
 
     /**
      * Execute [wipe] for each stored library
@@ -64,7 +59,6 @@ internal interface Controller {
 
     /**
      * Get all libraries available locally from the storage
-     * @return a list composed by each [Lib] saved in the storage
      */
     fun availableLibs(): List<Lib>
 }
