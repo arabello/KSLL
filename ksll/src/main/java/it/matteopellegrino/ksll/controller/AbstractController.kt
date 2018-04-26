@@ -4,9 +4,11 @@ import android.content.Context
 import android.util.Log
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
+import it.matteopellegrino.ksll.Failure
 import it.matteopellegrino.ksll.model.Lib
 import it.matteopellegrino.ksll.model.LibExtension
 import it.matteopellegrino.ksll.model.RemoteLib
+import it.matteopellegrino.ksll.security.Security
 import java.io.File
 import java.net.URL
 
@@ -29,15 +31,20 @@ internal abstract class AbstractController(context: Context) : LibController{
 
     abstract fun loadSAP(libFile: File, sapFile: File): Class<*>?
 
-    final override fun download(remoteLib: RemoteLib, success: (lib: Lib) -> Unit, failure: () -> Unit) {
+    final override fun download(remoteLib: RemoteLib, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit) {
         remoteLib.url.toString().httpGet().response{ _, response, result ->
             Log.d(javaClass.simpleName, "Response ready: ${result.component2()}" )
             when(result){
                 is Result.Failure -> {
                     Log.e(javaClass.simpleName, response.responseMessage)
-                    failure()
+                    failure(Failure.HTTPRequestError)
                 }
                 is Result.Success -> {
+                    if (!Security.verifySignature(remoteLib.publicKey, result.get(), remoteLib.signature)) {
+                        failure(Failure.NotTrustedData)
+                        return@response
+                    }
+
                     val libFile = resolveLibFile(remoteLib)
                     Log.d(javaClass.simpleName, "Creating '$libFile'")
                     libFile.parentFile.mkdirs()
@@ -49,7 +56,7 @@ internal abstract class AbstractController(context: Context) : LibController{
 
                     val sap = loadSAP(libFile, sapFile)
                     if (sap == null)
-                        failure()
+                        failure(Failure.CannotLoadSAPClass)
                     else
                         success(Lib(libFile, sap, remoteLib.version, remoteLib.extension))
                 }
@@ -68,7 +75,7 @@ internal abstract class AbstractController(context: Context) : LibController{
         return if (sap == null || ext == null) null else Lib(file, sap, file.nameWithoutExtension, ext)
     }
 
-    final override fun retrieve(remoteLib: RemoteLib, success: (lib: Lib) -> Unit, failure: () -> Unit) {
+    final override fun retrieve(remoteLib: RemoteLib, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit) {
         val lib = find(remoteLib)
         if (lib == null) {
             Log.d(javaClass.simpleName, "Lib $remoteLib doest not exist locally. Downloading..." )

@@ -1,7 +1,7 @@
 package it.matteopellegrino.ksll
 
 import android.content.Context
-import it.matteopellegrino.ksll.apimanager.ServerManager
+import it.matteopellegrino.ksll.api.ServerManager
 import it.matteopellegrino.ksll.controller.Factory
 import it.matteopellegrino.ksll.model.Lib
 import java.net.URL
@@ -10,7 +10,7 @@ import java.net.URL
  * Top level class entry point. A instance of this class expose the functionality of all
  * Kotlin Safety Library Loader module. The [manager] is an implementation of [ServerManager]
  * used to dialog with the server. For classic usage you can use default implementation
- * provided by [it.matteopellegrino.ksll.apimanager] package.
+ * provided by [it.matteopellegrino.ksll.api] package.
  * You can provide your own implementation, according to the server you are working with.
  *
  * @param context Android [Context] from which the class is instanced
@@ -29,7 +29,7 @@ class Ksll(private val context: Context, private val manager: ServerManager){
      * @param success Callback for successful result providing the [Lib] loaded as param. May be multiple invoked
      * @param failure Callback for failed result. May be multiple invoked
      */
-    fun multipleLoad(url: URL, success: (lib: Lib) -> Unit, failure: () -> Unit, shouldUpdate: Boolean = false){
+    fun multipleLoad(url: URL, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit, shouldUpdate: Boolean = false){
         manager.retrieveAvailableAPI(url, {remoteLibs ->
             remoteLibs.forEach {remoteLib ->
                 val ctrl = Factory(context).forExtension(remoteLib.extension)
@@ -53,7 +53,7 @@ class Ksll(private val context: Context, private val manager: ServerManager){
      * @param success Callback for successful result providing the [Lib] loaded as param
      * @param failure Callback for failed result
      */
-    fun load(url: URL, success: (lib: Lib) -> Unit, failure: () -> Unit, shouldUpdate: Boolean = false){
+    fun load(url: URL, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit, shouldUpdate: Boolean = false){
         manager.retrieveAvailableAPI(url, {remoteLibs ->
             val remoteLib = remoteLibs.first()
             val ctrl = Factory(context).forExtension(remoteLib.extension)

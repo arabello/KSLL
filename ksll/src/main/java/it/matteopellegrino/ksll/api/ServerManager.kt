@@ -1,5 +1,6 @@
 package it.matteopellegrino.ksll.api
 
+import it.matteopellegrino.ksll.Failure
 import it.matteopellegrino.ksll.model.RemoteLib
 import java.net.URL
 
@@ -11,7 +12,7 @@ import java.net.URL
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-interface ApiManager {
+interface ServerManager {
 
     /**
      * Async http request the [url], elaborate the response
@@ -21,5 +22,5 @@ interface ApiManager {
      * @param success Callback function on successful response
      * @param failure Callback function on error
      */
-    fun retrieveAvailableAPI(url: URL, success: (remoteLibs: List<RemoteLib>) -> Unit = {}, failure: () -> Unit = {})
+    fun retrieveAvailableAPI(url: URL, success: (remoteLibs: List<RemoteLib>) -> Unit = {}, failure: (cause: Failure) -> Unit = {})
 }

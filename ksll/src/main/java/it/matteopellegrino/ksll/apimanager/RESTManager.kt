@@ -1,9 +1,10 @@
-package it.matteopellegrino.ksll.apimanager
+package it.matteopellegrino.ksll.api
 
 import android.util.Log
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
+import it.matteopellegrino.ksll.Failure
 import it.matteopellegrino.ksll.model.LibExtension
 import it.matteopellegrino.ksll.model.RemoteLib
 import org.json.JSONException
@@ -17,12 +18,12 @@ import java.net.URL
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
 final class RESTManager : ServerManager {
-    override fun retrieveAvailableAPI(url: URL, success: (remoteLibs: List<RemoteLib>) -> Unit, failure: () -> Unit) {
+    override fun retrieveAvailableAPI(url: URL, success: (remoteLibs: List<RemoteLib>) -> Unit, failure: (cause: Failure) -> Unit) {
         url.toString().httpGet().responseJson { _, _, result ->
             when(result){
                 is Result.Failure -> {
                     Log.e(javaClass.simpleName, "Http request to $url failed")
-                    failure()
+                    failure(Failure.HTTPRequestError)
                 }
 
                 is Result.Success -> {
@@ -33,7 +34,10 @@ final class RESTManager : ServerManager {
 
                         return RemoteLib(URL(obj.getString("url")),
                                 obj.getString("sapclassName"),
-                                obj.getString("version"), ext)
+                                obj.getString("version"),
+                                ext,
+                                obj.getString("signature"),
+                                obj.getString("publicKey"))
                     }
 
 
@@ -56,7 +60,7 @@ final class RESTManager : ServerManager {
                         return@responseJson
                     }catch (ignored: JSONException){ }
 
-                    failure()
+                    failure(Failure.MalformedMetaData)
                 }
             }
         }
