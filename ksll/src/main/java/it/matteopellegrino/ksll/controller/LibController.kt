@@ -1,5 +1,6 @@
 package it.matteopellegrino.ksll.controller
 
+import it.matteopellegrino.ksll.Failure
 import it.matteopellegrino.ksll.model.Lib
 import it.matteopellegrino.ksll.model.LibExtension
 import it.matteopellegrino.ksll.model.RemoteLib
@@ -31,7 +32,7 @@ internal interface LibController {
      * @param success Callback function with a [Lib] param for the downloaded lib
      * @param failure Callback for errors
      */
-    fun download(remoteLib: RemoteLib, success: (lib: Lib) -> Unit = {}, failure: () -> Unit = {})
+    fun download(remoteLib: RemoteLib, success: (lib: Lib) -> Unit = {}, failure: (cause: Failure) -> Unit = {})
 
     /**
      * Search in the local storage if a [Lib]
@@ -52,7 +53,7 @@ internal interface LibController {
      * @param success Callback function with a [Class] param for the sap class from the retrieved lib
      * @param failure Callback for errors
      */
-    fun retrieve(remoteLib: RemoteLib, success: (lib: Lib) -> Unit = {}, failure: () -> Unit = {})
+    fun retrieve(remoteLib: RemoteLib, success: (lib: Lib) -> Unit = {}, failure: (cause: Failure) -> Unit = {})
 
     /**
      * Delete all files and directories concerned by
