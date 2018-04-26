@@ -1,72 +1,87 @@
 package it.matteopellegrino.ksll.controller
 
+import android.content.Context
+import android.util.Log
+import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.result.Result
+import dalvik.system.DexClassLoader
 import it.matteopellegrino.ksll.Failure
 import it.matteopellegrino.ksll.model.Lib
 import it.matteopellegrino.ksll.model.LibExtension
 import it.matteopellegrino.ksll.model.RemoteLib
-import java.net.URL
+import it.matteopellegrino.ksll.security.Security
+import java.io.File
 
 /**
- * Define the API for a generic controller that resolve [RemoteLib]s
+ * TODO
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-internal interface LibController {
-    /**
-     * Parent path containing all [Lib] currently available locally
-     */
-    val BASE_LIB_DIRNAME: String
+internal class LibController(context: Context) : Controller{
+    val storage = StorageHelper(context)
 
-    /**
-     * A [RemoteLib] can be different kind of library such as .jar, .dex, .zip or .apk
-     * This property contains the extensions name that the implemented controller
-     * is able to resolve. Class loading depends on this.
-     */
-    val SUPPORTED_EXTENSIONS: List<LibExtension>
+    override fun download(remoteLib: RemoteLib, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit) {
+        remoteLib.url.toString().httpGet().response{ _, response, result ->
+            Log.d(javaClass.simpleName, "Response ready: ${result.component2()}" )
+            when(result){
+                is Result.Failure -> {
+                    Log.e(javaClass.simpleName, response.responseMessage)
+                    failure(Failure.HTTPRequestError)
+                }
+                is Result.Success -> {
+                    if (!Security.verifySignature(remoteLib.publicKey, result.get(), remoteLib.signature)) {
+                        failure(Failure.NotTrustedData)
+                        return@response
+                    }
 
-    /**
-     * Async download a file from [RemoteLib.url], store it and
-     * return the corresponding [Lib] representation
-     *
-     * @param remoteLib Containing all info to accomplish the download and the SAP class loading
-     * @param success Callback function with a [Lib] param for the downloaded lib
-     * @param failure Callback for errors
-     */
-    fun download(remoteLib: RemoteLib, success: (lib: Lib) -> Unit = {}, failure: (cause: Failure) -> Unit = {})
+                    val (libFile, sapFile) = storage.create(remoteLib, result.get())
 
-    /**
-     * Search in the local storage if a [Lib]
-     * corresponding to the remote one is available
-     *
-     * @param remoteLib The remote lib that should is stored locally
-     * @return A [Lib] representation or null if [remoteLib] is not available locally
-     */
-    fun find(remoteLib: RemoteLib) : Lib?
+                    val sap = loadSAP(libFile, sapFile)
+                    if (sap == null)
+                        failure(Failure.CannotLoadSAPClass)
+                    else
+                        success(Lib(libFile, sap, remoteLib.version, remoteLib.extension))
+                }
+            }
+        }
+    }
 
-    /**
-     * Try to [LibController.find] a library locally.
-     * If not available try to [LibController.download] it.
-     *
-     * The [success] callback works for both case, [failure] as well.
-     *
-     * @param remoteLib Containing all info to accomplish the [download] or [find]
-     * @param success Callback function with a [Class] param for the sap class from the retrieved lib
-     * @param failure Callback for errors
-     */
-    fun retrieve(remoteLib: RemoteLib, success: (lib: Lib) -> Unit = {}, failure: (cause: Failure) -> Unit = {})
+    override fun find(remoteLib: RemoteLib): Lib? {
+        val file = storage.resolveLibFile(remoteLib)
+        if (!file.exists()) return null
+        val sapFile = storage.resolveSapFile(remoteLib.url)
+        if (!sapFile.exists()) return null
 
-    /**
-     * Delete all files and directories concerned by
-     * the given [existingLib]
-     *
-     * @param existingLib A lib to be deleted, if it doesn't exist
-     * this action has no effect
-     * @return The outcome of the operation as boolean
-     */
-    fun wipe(existingLib: Lib): Boolean
+        val sap = loadSAP(file, sapFile)
+        val ext = LibExtension.from(file.extension)
+        return if (sap == null || ext == null) null else Lib(file, sap, file.nameWithoutExtension, ext)
+    }
 
-    /**
-     * Execute [wipe] converting the given [RemoteLib] to the local representation [Lib]
-     */
-    fun wipe(remoteLib: RemoteLib): Boolean
+    override fun retrieve(remoteLib: RemoteLib, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit) {
+        val lib = find(remoteLib)
+        if (lib == null) {
+            Log.d(javaClass.simpleName, "Lib $remoteLib doest not exist locally. Downloading..." )
+            download(remoteLib, success, failure)
+        }else {
+            Log.d(javaClass.simpleName, "Lib $remoteLib ready locally. Loading..." )
+            success(lib)
+        }
+    }
+
+    fun loadSAP(libFile: File, sapFile: File): Class<*>? = if (!libFile.exists() || !sapFile.exists())
+                null
+            else
+                DexClassLoader(libFile.absolutePath, storage.dexDir.absolutePath, null, javaClass.classLoader)
+                        .loadClass(sapFile.readText())
+
+    override fun wipe(existingLib: Lib): Boolean = storage.delete(existingLib)
+
+    override fun wipe(remoteLib: RemoteLib): Boolean {
+        val lib = find(remoteLib) ?: return false
+        return wipe(lib)
+    }
+
+    override fun wipeAll() = storage.availableLibs().forEach { wipe(it) }
+
+    override fun availableLibs(): List<Lib> = storage.availableLibs()
 }

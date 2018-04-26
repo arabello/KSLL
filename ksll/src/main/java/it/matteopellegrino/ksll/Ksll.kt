@@ -2,7 +2,7 @@ package it.matteopellegrino.ksll
 
 import android.content.Context
 import it.matteopellegrino.ksll.apimanager.ServerManager
-import it.matteopellegrino.ksll.controller.Factory
+import it.matteopellegrino.ksll.controller.LibController
 import it.matteopellegrino.ksll.model.Lib
 import java.net.URL
 
@@ -32,7 +32,7 @@ class Ksll(private val context: Context, private val manager: ServerManager){
     fun multipleLoad(url: URL, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit, shouldUpdate: Boolean = false){
         manager.retrieveAvailableAPI(url, {remoteLibs ->
             remoteLibs.forEach {remoteLib ->
-                val ctrl = Factory(context).forExtension(remoteLib.extension)
+                val ctrl = LibController(context)
                 ctrl.retrieve(remoteLib, {lib ->
                     if (shouldUpdate && lib.version != remoteLib.version)
                         ctrl.download(remoteLib, success, failure)
@@ -56,7 +56,7 @@ class Ksll(private val context: Context, private val manager: ServerManager){
     fun load(url: URL, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit, shouldUpdate: Boolean = false){
         manager.retrieveAvailableAPI(url, {remoteLibs ->
             val remoteLib = remoteLibs.first()
-            val ctrl = Factory(context).forExtension(remoteLib.extension)
+            val ctrl = LibController(context)
             ctrl.retrieve(remoteLib, { lib ->
                 if (shouldUpdate && lib.file.nameWithoutExtension != remoteLib.version)
                     ctrl.download(remoteLib, success, failure)
