@@ -14,4 +14,17 @@ import java.io.File
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-data class Lib(val file: File, val SAPClass: Class<*>, val version: String, val extension: LibExtension)
+data class Lib(val file: File, val SAPClass: Class<*>, val version: String, val extension: LibExtension){
+    override fun equals(other: Any?): Boolean {
+        if (!super.equals(other))
+            return false
+        val otherLib = other as Lib
+        if (otherLib.file != file)
+            return false
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return super.hashCode()
+    }
+}

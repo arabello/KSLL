@@ -1,10 +1,11 @@
-package it.matteopellegrino.ksll.api
+package it.matteopellegrino.ksll.apimanager
 
 import android.util.Log
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
 import it.matteopellegrino.ksll.Failure
+import it.matteopellegrino.ksll.apimanager.ServerManager
 import it.matteopellegrino.ksll.model.LibExtension
 import it.matteopellegrino.ksll.model.RemoteLib
 import org.json.JSONException

@@ -1,7 +1,7 @@
 package it.matteopellegrino.ksll
 
 import android.content.Context
-import it.matteopellegrino.ksll.api.ServerManager
+import it.matteopellegrino.ksll.apimanager.ServerManager
 import it.matteopellegrino.ksll.controller.Factory
 import it.matteopellegrino.ksll.model.Lib
 import java.net.URL

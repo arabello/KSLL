@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import it.matteopellegrino.ksll.Failure
 import it.matteopellegrino.ksll.Ksll
-import it.matteopellegrino.ksll.api.RESTManager
+import it.matteopellegrino.ksll.apimanager.RESTManager
 import java.net.URL
 
 class MainActivity : AppCompatActivity() {
