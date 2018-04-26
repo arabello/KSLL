@@ -9,7 +9,8 @@ import java.io.ObjectOutputStream
 import java.net.URL
 
 /**
- * TODO: Add class description
+ * Helper class for create, delete and maintain files related to different
+ * [Lib]s
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
@@ -34,21 +35,45 @@ class StorageHelper(context: Context) {
 
     private fun URL.toDirPath(): String = protocol + File.separator + host + File.separator + port + File.separator + path
 
-    fun resolveLibFile(remoteLib: RemoteLib): File =
+    /**
+     * Resolve [remoteLib] into a [File] building
+     * the path related to the current storage
+     * @param remoteLib the lib to be resolved
+     * @return a file instance, may no exists
+     */
+    fun fileOf(remoteLib: RemoteLib): File =
             File(baseDirName,remoteLib.url.toDirPath() + File.separator + "${remoteLib.version}.${remoteLib.extension}")
 
-    fun resolveSapFile(url: URL): File =
+    /**
+     * Resolve [url] into a [File] building
+     * the path related to the current storage
+     * @param url identifying a library
+     * @return a file instance, may no exists
+     */
+    fun sapFileOf(url: URL): File =
             File(baseDirName, url.toDirPath() + File.separator + sapFileName)
 
+    /**
+     * Create directories and files to maintain a persistent representation
+     * of [remoteLib] with the corresponding lib [data]
+     * @param remoteLib Representation of a [Lib] retrievable remotely
+     * @param data bytes of the library content
+     * @return a [Pair] of the [Lib] file and the corresponding SAP file created
+     */
     fun create(remoteLib: RemoteLib, data: ByteArray): Pair<File, File>{
-        val libFile = resolveLibFile(remoteLib)
+        val libFile = fileOf(remoteLib)
         libFile.parentFile.mkdirs()
         libFile.writeBytes(data)
-        val sapFile = resolveSapFile(remoteLib.url)
+        val sapFile = sapFileOf(remoteLib.url)
         sapFile.printWriter().use { it.print(remoteLib.SAPClassName) }
         return Pair(libFile, sapFile)
     }
 
+    /**
+     * Try to remove physically and logically an existing [Lib]
+     * @param existingLib The [Lib] you want to delete
+     * @return false if [existingLib] does not exist or an error occurred. True otherwise
+     */
     fun delete(existingLib: Lib): Boolean {
         if (!availableLibs.remove(existingLib) || !existingLib.file.exists())
             return false
@@ -59,6 +84,9 @@ class StorageHelper(context: Context) {
         return true
     }
 
+    /**
+     * Retrieve all logical available [Lib]s
+     */
     fun availableLibs(): List<Lib> = availableLibs
 
 }

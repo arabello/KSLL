@@ -10,7 +10,7 @@ import kotlin.math.sign
 
 
 /**
- * TODO: Add class description
+ * Helper class for verify digital signature of a downloaded library
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */

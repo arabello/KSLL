@@ -9,7 +9,6 @@ import org.junit.runner.RunWith
 import java.io.File
 
 /**
- * TODO: Add class description
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */

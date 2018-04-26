@@ -13,7 +13,9 @@ import it.matteopellegrino.ksll.security.Security
 import java.io.File
 
 /**
- * TODO
+ * Implementation of [Controller] which stores data as files
+ * in the internal storage of the given [Context].
+ * All physical storing logic is provided by [StorageHelper]
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
@@ -47,9 +49,9 @@ internal class LibController(context: Context) : Controller{
     }
 
     override fun find(remoteLib: RemoteLib): Lib? {
-        val file = storage.resolveLibFile(remoteLib)
+        val file = storage.fileOf(remoteLib)
         if (!file.exists()) return null
-        val sapFile = storage.resolveSapFile(remoteLib.url)
+        val sapFile = storage.sapFileOf(remoteLib.url)
         if (!sapFile.exists()) return null
 
         val sap = loadSAP(file, sapFile)
@@ -68,7 +70,7 @@ internal class LibController(context: Context) : Controller{
         }
     }
 
-    fun loadSAP(libFile: File, sapFile: File): Class<*>? = if (!libFile.exists() || !sapFile.exists())
+    private fun loadSAP(libFile: File, sapFile: File): Class<*>? = if (!libFile.exists() || !sapFile.exists())
                 null
             else
                 DexClassLoader(libFile.absolutePath, storage.dexDir.absolutePath, null, javaClass.classLoader)
