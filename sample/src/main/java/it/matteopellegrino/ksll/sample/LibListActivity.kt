@@ -8,7 +8,7 @@ import it.matteopellegrino.ksll.Ksll
 import it.matteopellegrino.ksll.apimanager.RESTManager
 import it.matteopellegrino.ksll.model.Lib
 
-class MainActivity : AppCompatActivity() {
+class LibListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
