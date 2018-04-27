@@ -2,11 +2,14 @@ package it.matteopellegrino.ksll.sample
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import it.matteopellegrino.ksll.Failure
 import it.matteopellegrino.ksll.Ksll
 import it.matteopellegrino.ksll.apimanager.RESTManager
 import it.matteopellegrino.ksll.model.Lib
+import it.matteopellegrino.ksll.sample.adapter.LibAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 
 class LibListActivity : AppCompatActivity() {
 
@@ -36,6 +39,8 @@ class LibListActivity : AppCompatActivity() {
         //ksll.load(URL("http://192.168.1.157:8080"), success, failure, true)
         //ksll.load(URL("http://192.168.1.157:8090"), success, failure, true)
 
+        libRecyclerView.layoutManager = LinearLayoutManager(this)
+        libRecyclerView.adapter = LibAdapter(this, ksll.availableLibs())
     }
 
 

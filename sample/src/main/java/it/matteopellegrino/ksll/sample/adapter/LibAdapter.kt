@@ -1,13 +1,13 @@
 package it.matteopellegrino.ksll.sample.adapter
 
 import android.content.Context
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.TextView
 import it.matteopellegrino.ksll.model.Lib
 import it.matteopellegrino.ksll.sample.R
-import android.widget.TextView
 import kotlinx.android.synthetic.main.item_lib.view.*
 
 
@@ -16,30 +16,23 @@ import kotlinx.android.synthetic.main.item_lib.view.*
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-class LibAdapter(context: Context, objects: MutableList<Lib>?):
-        ArrayAdapter<Lib>(context, R.layout.item_lib, objects) {
+class LibAdapter( val context: Context, val objects: List<Lib>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    data class ViewHolder(val view: View): RecyclerView.ViewHolder(view){
+        val sapClassName: TextView = view.textSapClassName
+        val version: TextView = view.textVersion
+        val extension: TextView = view.textExtension
+    }
 
-    data class ViewHolder(val SAPClassName: TextView, val version: TextView, val extension: TextView)
+    override fun getItemCount(): Int = objects.size
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        var holder: ViewHolder
-        var retView: View
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+            ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_lib, parent, false))
 
-        if(convertView == null){
-            retView = LayoutInflater.from(context).inflate(R.layout.item_lib, parent, false)
-            holder = ViewHolder(retView.textSapClassName, retView.textVersion, retView.textExtension)
-            val lib = getItem(position) ?: return retView
-
-            holder.SAPClassName.text = lib.SAPClass.name
-            holder.version.text = lib.version
-            holder.extension.text = lib.extension.toString()
-
-            retView.tag = holder
-        } else {
-            holder = convertView.tag as ViewHolder
-            retView = convertView
-        }
-
-        return retView
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        var myholder = holder as ViewHolder
+        val lib = objects[position]
+        myholder.sapClassName.text = lib.SAPClass.name
+        myholder.version.text = lib.version
+        myholder.extension.text = lib.extension.toString()
     }
 }
