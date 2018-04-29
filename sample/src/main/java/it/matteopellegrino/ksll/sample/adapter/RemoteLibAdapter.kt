@@ -8,7 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import it.matteopellegrino.ksll.model.Lib
-import it.matteopellegrino.ksll.sample.LibActivity
+import it.matteopellegrino.ksll.model.RemoteLib
+import it.matteopellegrino.ksll.sample.RemoteLibActivity
 import it.matteopellegrino.ksll.sample.R
 import kotlinx.android.synthetic.main.item_lib.view.*
 
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.item_lib.view.*
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-class LibAdapter( val context: Context, val objects: List<Lib>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RemoteLibAdapter(val context: Context, val objects: List<RemoteLib>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     data class ViewHolder(val view: View): RecyclerView.ViewHolder(view){
         val sapClassName: TextView = view.textSapClassName
         val version: TextView = view.textVersion
@@ -37,14 +38,14 @@ class LibAdapter( val context: Context, val objects: List<Lib>): RecyclerView.Ad
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val vh = ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_lib, parent, false))
         return vh.listen { position, type ->
-            context.startActivity(Intent(context, LibActivity::class.java))
+            context.startActivity(Intent(context, RemoteLibActivity::class.java))
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var myholder = holder as ViewHolder
         val lib = objects[position]
-        myholder.sapClassName.text = lib.SAPClass.name
+        myholder.sapClassName.text = lib.SAPClassName
         myholder.version.text = lib.version
         myholder.extension.text = lib.extension.toString()
     }

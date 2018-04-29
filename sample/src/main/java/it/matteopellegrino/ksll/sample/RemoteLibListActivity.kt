@@ -3,16 +3,16 @@ package it.matteopellegrino.ksll.sample
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.widget.Toast
 import it.matteopellegrino.ksll.Failure
 import it.matteopellegrino.ksll.Ksll
 import it.matteopellegrino.ksll.apimanager.RESTManager
+import it.matteopellegrino.ksll.localLoad
 import it.matteopellegrino.ksll.model.Lib
-import it.matteopellegrino.ksll.sample.adapter.LibAdapter
+import it.matteopellegrino.ksll.sample.adapter.RemoteLibAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
-class LibListActivity : AppCompatActivity() {
+class RemoteLibListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,8 +20,11 @@ class LibListActivity : AppCompatActivity() {
 
         val ksll = Ksll(this, RESTManager())
 
+        libRecyclerView.layoutManager = LinearLayoutManager(this)
+        libRecyclerView.adapter = RemoteLibAdapter(this, ksll.availableLibs())
+
         val success: (Lib) -> Unit = {lib ->
-            println(lib.SAPClass.name)
+
         }
 
         val failure: (Failure) -> Unit = {error ->
@@ -39,9 +42,10 @@ class LibListActivity : AppCompatActivity() {
 
         //ksll.load(URL("http://192.168.1.157:8080"), success, failure, true)
         //ksll.load(URL("http://192.168.1.157:8090"), success, failure, true)
+        "http://192.168.1.157:8080".localLoad(ksll)?.require { obj, methods ->
+            println(methods[1].invoke(obj, "ciao"))
+        }
 
-        libRecyclerView.layoutManager = LinearLayoutManager(this)
-        libRecyclerView.adapter = LibAdapter(this, ksll.availableLibs())
     }
 
 

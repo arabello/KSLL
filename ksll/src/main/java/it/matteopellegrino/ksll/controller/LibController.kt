@@ -128,16 +128,6 @@ internal class LibController(context: Context) : Controller{
 
     override fun wipeAll() = availableLibs.forEach {wipe(it)}
 
-    /**
-     * Retrieve all logical available [Lib]s
-     */
-    override fun availableLibs(): List<Lib> {
-        val list: MutableList<Lib> = arrayListOf()
-        availableLibs.forEach {remoteLib ->
-            val lib = find(remoteLib)
-            if (lib != null)
-                list.add(lib)
-        }
-        return list
-    }
+    override fun availableLibs(): List<RemoteLib> = availableLibs.toList()
+
 }

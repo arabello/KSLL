@@ -1,5 +1,7 @@
 package it.matteopellegrino.ksll.model
 
+import java.lang.reflect.Method
+
 /**
  * Data class representing the logic entity of a local library.
  *
@@ -10,6 +12,10 @@ package it.matteopellegrino.ksll.model
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-data class Lib(val SAPClass: Class<*>,
-               val version: String,
-               val extension: LibExtension)
+data class Lib(val SAPClass: Class<*>, val version: String, val extension: LibExtension){
+    inline fun require(service: (obj: Any, methods: List<Method>) -> Unit) {
+        val inst = SAPClass.newInstance()
+        val mthds = SAPClass.methods.filter { it.declaringClass != Any::class.java }
+        service(inst, mthds)
+    }
+}

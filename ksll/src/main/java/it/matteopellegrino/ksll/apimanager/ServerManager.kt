@@ -22,5 +22,5 @@ interface ServerManager {
      * @param success Callback function on successful response
      * @param failure Callback function on error
      */
-    fun retrieveAvailableAPI(url: URL, success: (remoteLibs: List<RemoteLib>) -> Unit = {}, failure: (cause: Failure) -> Unit = {})
+    fun retrieveAvailableAPI(url: URL, success: (remoteLib: List<RemoteLib>) -> Unit = {}, failure: (cause: Failure) -> Unit = {})
 }

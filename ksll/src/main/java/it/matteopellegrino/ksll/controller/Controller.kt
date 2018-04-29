@@ -60,5 +60,5 @@ internal interface Controller {
     /**
      * Get all libraries available locally from the storage
      */
-    fun availableLibs(): List<Lib>
+    fun availableLibs(): List<RemoteLib>
 }
