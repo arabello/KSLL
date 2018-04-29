@@ -9,20 +9,19 @@ import it.matteopellegrino.ksll.Ksll
 import it.matteopellegrino.ksll.apimanager.RESTManager
 import it.matteopellegrino.ksll.load
 import it.matteopellegrino.ksll.sample.adapter.RemoteLibAdapter
+import it.matteopellegrino.ksll.sample.dialog.AddLibDialogBuilder
 import kotlinx.android.synthetic.main.activity_remotelib_list.*
 
 class RemoteLibListActivity : AppCompatActivity() {
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_remotelib_list)
-
-        val ksll = Ksll(this, RESTManager())
-
-        libRecyclerView.layoutManager = LinearLayoutManager(this)
-        libRecyclerView.adapter = RemoteLibAdapter(this, ksll.availableLibs())
-
-        val failure: (Failure) -> Unit = {error ->
+        val ksll = Ksll(baseContext, RESTManager())
+        val adapter = RemoteLibAdapter(this, ksll.availableLibs())
+        val ksllFailure: (Failure) -> Unit = { error ->
             val msg = when(error){
                 Failure.NotTrustedData -> "Signature verification failed. Library not trusted."
                 Failure.HTTPRequestError -> "Connection problem. Cannot retrieve library."
@@ -34,16 +33,20 @@ class RemoteLibListActivity : AppCompatActivity() {
             Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
         }
 
+        listRemoteLib.layoutManager = LinearLayoutManager(this)
+        listRemoteLib.adapter = adapter
 
-        //ksll.load(URL("http://192.168.1.157:8080"), success, failure, true)
-        //ksll.load(URL("http://192.168.1.157:8090"), success, failure, true)
-        "http://192.168.1.157:8080".load(ksll, {lib ->
-            lib.require { obj, methods ->
-                println(methods[1].invoke(obj, "ciao"))
+        addRemoteLib.setOnClickListener {
+            val dialog = AddLibDialogBuilder(this)
+            dialog.setPositiveButton("Load"){ _, _ ->
+                ksll.load(dialog.input.text.toString(), {
+                    adapter.setItems(ksll.availableLibs())
+                    adapter.notifyDataSetChanged()
+                }, ksllFailure)
             }
-        }, failure)
+            dialog.show()
+        }
 
     }
-
 
 }

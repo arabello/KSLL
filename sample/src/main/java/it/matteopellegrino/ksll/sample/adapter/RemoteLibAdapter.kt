@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.item_remotelib.view.*
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-class RemoteLibAdapter(val context: Context, val objects: List<RemoteLib>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RemoteLibAdapter(val context: Context, private var objects: List<RemoteLib>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     data class ViewHolder(val view: View): RecyclerView.ViewHolder(view){
         val sapClassName: TextView = view.textSapClassName
         val url: TextView = view.textUrl
@@ -35,6 +35,10 @@ class RemoteLibAdapter(val context: Context, val objects: List<RemoteLib>): Recy
     }
 
     override fun getItemCount(): Int = objects.size
+
+    fun setItems(objs: List<RemoteLib>) {
+        objects = objs
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val vh = ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_remotelib, parent, false))
