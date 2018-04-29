@@ -8,16 +8,14 @@ import it.matteopellegrino.ksll.Failure
 import it.matteopellegrino.ksll.Ksll
 import it.matteopellegrino.ksll.apimanager.RESTManager
 import it.matteopellegrino.ksll.load
-import it.matteopellegrino.ksll.localLoad
-import it.matteopellegrino.ksll.model.Lib
 import it.matteopellegrino.ksll.sample.adapter.RemoteLibAdapter
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_remotelib_list.*
 
 class RemoteLibListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_remotelib_list)
 
         val ksll = Ksll(this, RESTManager())
 

@@ -11,7 +11,7 @@ import it.matteopellegrino.ksll.model.Lib
 import it.matteopellegrino.ksll.model.RemoteLib
 import it.matteopellegrino.ksll.sample.RemoteLibActivity
 import it.matteopellegrino.ksll.sample.R
-import kotlinx.android.synthetic.main.item_lib.view.*
+import kotlinx.android.synthetic.main.item_remotelib.view.*
 
 
 /**
@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.item_lib.view.*
 class RemoteLibAdapter(val context: Context, val objects: List<RemoteLib>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     data class ViewHolder(val view: View): RecyclerView.ViewHolder(view){
         val sapClassName: TextView = view.textSapClassName
+        val url: TextView = view.textUrl
         val version: TextView = view.textVersion
         val extension: TextView = view.textExtension
     }
@@ -36,7 +37,7 @@ class RemoteLibAdapter(val context: Context, val objects: List<RemoteLib>): Recy
     override fun getItemCount(): Int = objects.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val vh = ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_lib, parent, false))
+        val vh = ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_remotelib, parent, false))
         return vh.listen { position, type ->
             context.startActivity(Intent(context, RemoteLibActivity::class.java))
         }
@@ -46,6 +47,7 @@ class RemoteLibAdapter(val context: Context, val objects: List<RemoteLib>): Recy
         var myholder = holder as ViewHolder
         val lib = objects[position]
         myholder.sapClassName.text = lib.SAPClassName
+        myholder.url.text = lib.url.toString()
         myholder.version.text = lib.version
         myholder.extension.text = lib.extension.toString()
     }
