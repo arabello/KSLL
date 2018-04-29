@@ -7,6 +7,7 @@ import android.widget.Toast
 import it.matteopellegrino.ksll.Failure
 import it.matteopellegrino.ksll.Ksll
 import it.matteopellegrino.ksll.apimanager.RESTManager
+import it.matteopellegrino.ksll.load
 import it.matteopellegrino.ksll.localLoad
 import it.matteopellegrino.ksll.model.Lib
 import it.matteopellegrino.ksll.sample.adapter.RemoteLibAdapter
@@ -23,10 +24,6 @@ class RemoteLibListActivity : AppCompatActivity() {
         libRecyclerView.layoutManager = LinearLayoutManager(this)
         libRecyclerView.adapter = RemoteLibAdapter(this, ksll.availableLibs())
 
-        val success: (Lib) -> Unit = {lib ->
-
-        }
-
         val failure: (Failure) -> Unit = {error ->
             val msg = when(error){
                 Failure.NotTrustedData -> "Signature verification failed. Library not trusted."
@@ -42,9 +39,11 @@ class RemoteLibListActivity : AppCompatActivity() {
 
         //ksll.load(URL("http://192.168.1.157:8080"), success, failure, true)
         //ksll.load(URL("http://192.168.1.157:8090"), success, failure, true)
-        "http://192.168.1.157:8080".localLoad(ksll)?.require { obj, methods ->
-            println(methods[1].invoke(obj, "ciao"))
-        }
+        "http://192.168.1.157:8080".load(ksll, {lib ->
+            lib.require { obj, methods ->
+                println(methods[1].invoke(obj, "ciao"))
+            }
+        }, failure)
 
     }
 

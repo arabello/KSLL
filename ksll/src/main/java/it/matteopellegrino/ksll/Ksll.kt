@@ -138,4 +138,17 @@ class Ksll(private val context: Context, private val manager: ServerManager){
 }
 
 fun String.localLoad(instance: Ksll) = instance.localLoad(this)
+
 fun URL.localLoad(instance: Ksll) = instance.localLoad(this)
+
+fun String.load(instance: Ksll, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit, shouldUpdate: Boolean = true) =
+        instance.load(this, success, failure, shouldUpdate)
+
+fun URL.load(instance: Ksll, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit, shouldUpdate: Boolean = true) =
+        instance.load(this, success, failure, shouldUpdate)
+
+fun String.multipleLoad(instance: Ksll, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit, shouldUpdate: Boolean = true) =
+        instance.multipleLoad(this, success, failure, shouldUpdate)
+
+fun URL.multipleLoad(instance: Ksll, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit, shouldUpdate: Boolean = true) =
+        instance.multipleLoad(this, success, failure, shouldUpdate)
