@@ -64,6 +64,16 @@ internal class LibController(context: Context) : Controller{
     private fun create(remoteLib: RemoteLib, data: ByteArray): Lib{
         val entity = filesOf(remoteLib)
 
+        if (entity.libDir.exists()){
+            availableLibs.forEach {
+                if (remoteLib.url == it.url){
+                    filesOf(it).libFile.delete()
+                    filesOf(it).sapFile.delete()
+                    availableLibs.remove(it)
+                }
+            }
+        }
+
         entity.libDir.mkdirs()
         entity.libFile.parentFile.mkdirs()
         entity.libFile.writeBytes(data)

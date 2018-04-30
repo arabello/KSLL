@@ -103,10 +103,14 @@ class Ksll(private val context: Context, private val manager: ServerManager){
      * @param success Callback for successful result providing the [Lib] loaded as param
      * @param failure Callback for failed result
      */
-    fun load(url: String,
+    fun load(urlString: String,
              success: (lib: Lib) -> Unit,
              failure: (cause: Failure) -> Unit,
-             shouldUpdate: Boolean = true) = load(URL(url), success, failure, shouldUpdate)
+             shouldUpdate: Boolean = true) =
+            try{
+                val url = URL(urlString)
+                load(url, success, failure, shouldUpdate)
+            }catch (e: MalformedURLException){failure(Failure.HTTPRequestError)}
 
     /**
      * Search a library identified by [url] into the storage.
