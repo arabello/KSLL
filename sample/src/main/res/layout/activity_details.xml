@@ -6,7 +6,7 @@
     android:id="@+id/contentRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RemoteLibActivity">
+    tools:context=".DetailsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/main.appbar"

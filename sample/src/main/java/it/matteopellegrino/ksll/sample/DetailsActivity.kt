@@ -2,7 +2,6 @@ package it.matteopellegrino.ksll.sample
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -11,7 +10,7 @@ import it.matteopellegrino.ksll.apimanager.RESTManager
 import it.matteopellegrino.ksll.model.RemoteLib
 import it.matteopellegrino.ksll.require
 import it.matteopellegrino.ksll.sample.adapter.MethodAdapter
-import kotlinx.android.synthetic.main.activity_remotelib.*
+import kotlinx.android.synthetic.main.activity_details.*
 import android.support.v7.widget.DividerItemDecoration
 import android.view.Menu
 import android.view.MenuItem
@@ -20,7 +19,7 @@ import kotlinx.android.synthetic.main.item_remotelib.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 
-class RemoteLibActivity : AppCompatActivity() {
+class DetailsActivity : AppCompatActivity() {
 
     companion object {
         val REMOTE_LIB_EXTRA_KEY = "remotelib"
@@ -31,7 +30,7 @@ class RemoteLibActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_remotelib)
+        setContentView(R.layout.activity_details)
 
         setSupportActionBar(toolbar)
 
@@ -41,6 +40,7 @@ class RemoteLibActivity : AppCompatActivity() {
         supportActionBar?.title = remoteLib.SAPClassName
 
         textSapClassName.text = remoteLib.SAPClassName
+        textUrl.text = remoteLib.url.toString()
         textVersion.text = remoteLib.version
         textExtension.text = remoteLib.extension.toString()
 

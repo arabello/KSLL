@@ -1,6 +1,6 @@
 package it.matteopellegrino.ksll.sample.adapter
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import it.matteopellegrino.ksll.model.Lib
 import it.matteopellegrino.ksll.model.RemoteLib
-import it.matteopellegrino.ksll.sample.RemoteLibActivity
+import it.matteopellegrino.ksll.sample.DetailsActivity
 import it.matteopellegrino.ksll.sample.R
 import kotlinx.android.synthetic.main.item_remotelib.view.*
 
@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.item_remotelib.view.*
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-class RemoteLibAdapter(val context: Context, private var objects: List<RemoteLib>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RemoteLibAdapter(val activity: Activity, private var objects: List<RemoteLib>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     data class ViewHolder(val view: View): RecyclerView.ViewHolder(view){
         val sapClassName: TextView = view.textSapClassName
         val url: TextView = view.textUrl
@@ -41,11 +41,11 @@ class RemoteLibAdapter(val context: Context, private var objects: List<RemoteLib
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val vh = ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_remotelib, parent, false))
+        val vh = ViewHolder(LayoutInflater.from(activity).inflate(R.layout.item_remotelib, parent, false))
         return vh.listen { position, type ->
-            val intent = Intent(context, RemoteLibActivity::class.java)
-            intent.putExtra(RemoteLibActivity.REMOTE_LIB_EXTRA_KEY, objects[position])
-            context.startActivity(intent)
+            val intent = Intent(activity, DetailsActivity::class.java)
+            intent.putExtra(DetailsActivity.REMOTE_LIB_EXTRA_KEY, objects[position])
+            activity.startActivity(intent)
         }
     }
 
