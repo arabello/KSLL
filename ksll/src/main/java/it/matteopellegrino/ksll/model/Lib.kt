@@ -12,10 +12,4 @@ import java.lang.reflect.Method
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-data class Lib(val SAPClass: Class<*>, val version: String, val extension: LibExtension){
-    inline fun require(service: (obj: Any, methods: List<Method>) -> Unit) {
-        val inst = SAPClass.newInstance()
-        val mthds = SAPClass.methods.filter { it.declaringClass != Any::class.java }
-        service(inst, mthds)
-    }
-}
+data class Lib(val SAPClass: Class<*>, val version: String, val extension: LibExtension)

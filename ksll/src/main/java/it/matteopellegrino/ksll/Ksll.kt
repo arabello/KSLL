@@ -5,6 +5,7 @@ import it.matteopellegrino.ksll.apimanager.ServerManager
 import it.matteopellegrino.ksll.controller.LibController
 import it.matteopellegrino.ksll.model.Lib
 import it.matteopellegrino.ksll.model.RemoteLib
+import java.lang.reflect.Method
 import java.net.MalformedURLException
 import java.net.URL
 
@@ -152,3 +153,12 @@ fun String.multipleLoad(instance: Ksll, success: (lib: Lib) -> Unit, failure: (c
 
 fun URL.multipleLoad(instance: Ksll, success: (lib: Lib) -> Unit, failure: (cause: Failure) -> Unit, shouldUpdate: Boolean = true) =
         instance.multipleLoad(this, success, failure, shouldUpdate)
+
+inline fun Lib.require(service: (obj: Any, methods: List<Method>) -> Unit) {
+    val inst = SAPClass.newInstance()
+    val mthds = SAPClass.methods.filter { it.declaringClass != Any::class.java }
+    service(inst, mthds)
+}
+
+inline fun RemoteLib.require(instance: Ksll, service: (obj: Any, methods: List<Method>) -> Unit) =
+    instance.localLoad(this.url)?.require(service)

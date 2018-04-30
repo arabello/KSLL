@@ -7,7 +7,6 @@ import android.widget.Toast
 import it.matteopellegrino.ksll.Failure
 import it.matteopellegrino.ksll.Ksll
 import it.matteopellegrino.ksll.apimanager.RESTManager
-import it.matteopellegrino.ksll.load
 import it.matteopellegrino.ksll.sample.adapter.RemoteLibAdapter
 import it.matteopellegrino.ksll.sample.dialog.AddLibDialogBuilder
 import kotlinx.android.synthetic.main.activity_remotelib_list.*
@@ -33,10 +32,10 @@ class RemoteLibListActivity : AppCompatActivity() {
             Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
         }
 
-        listRemoteLib.layoutManager = LinearLayoutManager(this)
-        listRemoteLib.adapter = adapter
+        recyclerViewLibs.layoutManager = LinearLayoutManager(this)
+        recyclerViewLibs.adapter = adapter
 
-        addRemoteLib.setOnClickListener {
+        fabAddLib.setOnClickListener {
             val dialog = AddLibDialogBuilder(this)
             dialog.setPositiveButton("Load"){ _, _ ->
                 ksll.load(dialog.input.text.toString(), {

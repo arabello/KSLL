@@ -8,18 +8,18 @@
     tools:context=".RemoteLibListActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/listRemoteLib"
+        android:id="@+id/recyclerViewLibs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addRemoteLib"
+        android:id="@+id/fabAddLib"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add_black_24dp"
-        app:layout_anchor="@id/listRemoteLib"
+        app:layout_anchor="@id/recyclerViewLibs"
         app:layout_anchorGravity="bottom|right|end" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -43,7 +43,9 @@ class RemoteLibAdapter(val context: Context, private var objects: List<RemoteLib
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val vh = ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_remotelib, parent, false))
         return vh.listen { position, type ->
-            context.startActivity(Intent(context, RemoteLibActivity::class.java))
+            val intent = Intent(context, RemoteLibActivity::class.java)
+            intent.putExtra(RemoteLibActivity.REMOTE_LIB_EXTRA_KEY, objects[position])
+            context.startActivity(intent)
         }
     }
 
