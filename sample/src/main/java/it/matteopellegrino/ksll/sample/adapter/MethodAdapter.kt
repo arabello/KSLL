@@ -47,8 +47,9 @@ class MethodAdapter(val context: Context, private var objects: List<Method>): Re
         myholder.name.text = method.name
 
         val b = StringBuilder("(")
-        method.parameterTypes.forEach { b.append(it.toString()); b.append(",") }
+        method.parameterTypes.forEach { b.append(it.canonicalName); b.append(",") }
         b.replace(b.length-1, b.length, ")")
+        b.append(": "); b.append(method.returnType)
 
         myholder.params.text = b.toString()
     }
