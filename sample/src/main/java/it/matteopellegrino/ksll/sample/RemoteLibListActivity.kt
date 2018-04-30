@@ -10,6 +10,7 @@ import it.matteopellegrino.ksll.apimanager.RESTManager
 import it.matteopellegrino.ksll.sample.adapter.RemoteLibAdapter
 import it.matteopellegrino.ksll.sample.dialog.AddLibDialogBuilder
 import kotlinx.android.synthetic.main.activity_remotelib_list.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class RemoteLibListActivity : AppCompatActivity() {
 
@@ -18,6 +19,9 @@ class RemoteLibListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_remotelib_list)
+
+        setSupportActionBar(toolbar)
+
         val ksll = Ksll(baseContext, RESTManager())
         val adapter = RemoteLibAdapter(this, ksll.availableLibs())
         val ksllFailure: (Failure) -> Unit = { error ->
@@ -37,7 +41,7 @@ class RemoteLibListActivity : AppCompatActivity() {
 
         fabAddLib.setOnClickListener {
             val dialog = AddLibDialogBuilder(this)
-            dialog.setPositiveButton("Load"){ _, _ ->
+            dialog.setPositiveButton(getString(R.string.load)){ _, _ ->
                 ksll.load(dialog.input.text.toString(), {
                     adapter.setItems(ksll.availableLibs())
                     adapter.notifyDataSetChanged()

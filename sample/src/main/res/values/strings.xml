@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Kotlin Safety Libraries Loader</string>
+    <string name="delete">delete</string>
+    <string name="load">Load</string>
+    <string name="action_irreversible">This is action is irreversible. Are you sure?</string>
+    <string name="cancel">Cancel</string>
+    <string name="action_delete_success">Successfully deleted</string>
+    <string name="action_delete_failure">Error. Cannot delete.</string>
 </resources>

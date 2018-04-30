@@ -25,7 +25,9 @@ import java.net.URL
 class Ksll(private val context: Context, private val manager: ServerManager){
     private val ctrl = LibController(context)
 
-    fun availableLibs(): List<RemoteLib> = ctrl.availableLibs()
+    fun availableLibs() = ctrl.availableLibs()
+    fun wipe(remoteLib: RemoteLib) = ctrl.wipe(remoteLib)
+    fun wipeAll() = ctrl.wipeAll()
 
     /**
      * Retrieve all libraries exposed at [url]. If [shouldUpdate] is true, then a version checking will performed
