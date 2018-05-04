@@ -1,7 +1,5 @@
 package it.matteopellegrino.ksll.model
 
-import java.lang.reflect.Method
-
 /**
  * Data class representing the logic entity of a local library.
  *

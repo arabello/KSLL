@@ -6,7 +6,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import it.matteopellegrino.ksll.Ksll
-import it.matteopellegrino.ksll.apimanager.RESTManager
+import it.matteopellegrino.ksll.servermanager.RESTManager
 import it.matteopellegrino.ksll.model.RemoteLib
 import it.matteopellegrino.ksll.require
 import it.matteopellegrino.ksll.sample.adapter.MethodAdapter

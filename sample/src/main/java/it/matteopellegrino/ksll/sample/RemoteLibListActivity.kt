@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import it.matteopellegrino.ksll.Failure
 import it.matteopellegrino.ksll.Ksll
-import it.matteopellegrino.ksll.apimanager.RESTManager
+import it.matteopellegrino.ksll.servermanager.RESTManager
 import it.matteopellegrino.ksll.sample.adapter.RemoteLibAdapter
 import it.matteopellegrino.ksll.sample.dialog.AddLibDialogBuilder
 import kotlinx.android.synthetic.main.activity_remotelib_list.*

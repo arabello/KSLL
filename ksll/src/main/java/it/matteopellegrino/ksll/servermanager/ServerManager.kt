@@ -1,4 +1,4 @@
-package it.matteopellegrino.ksll.apimanager
+package it.matteopellegrino.ksll.servermanager
 
 import it.matteopellegrino.ksll.Failure
 import it.matteopellegrino.ksll.model.RemoteLib
