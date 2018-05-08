@@ -14,7 +14,7 @@ import kotlin.math.sign
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-object Security {
+internal object Security {
     private val KEY_FACTORY_ALGORITHM = "RSA"
     private val SIGNATURE_ALGORITHM = "SHA512withRSA"
 

@@ -10,4 +10,6 @@ package it.matteopellegrino.ksll.model
  *
  * @author Matteo Pellegrino matteo.pelle.pellegrino@gmail.com
  */
-data class Lib(val SAPClass: Class<*>, val version: String, val extension: LibExtension)
+data class Lib(val SAPClass: Class<*>,
+               val version: String,
+               val extension: LibExtension)
