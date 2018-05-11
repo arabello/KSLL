@@ -18,9 +18,9 @@ interface ServerManager {
      * Async http request the [url], elaborate the response
      * and invoke [success] or [failure]
      *
-     * @param url The URL at which a web server is ready to respond (with a KSLA meta inf)
+     * @param url The URL at which a web server is ready to respond (with a KSLL meta inf)
      * @param success Callback function on successful response
      * @param failure Callback function on error
      */
-    fun retrieveAvailableAPI(url: URL, success: (remoteLib: List<RemoteLib>) -> Unit = {}, failure: (cause: Failure) -> Unit = {})
+    fun retrieveAvailableAPI(url: URL, success: (remoteLib: List<RemoteLib>) -> Unit, failure: (cause: Failure) -> Unit)
 }
