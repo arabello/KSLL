@@ -18,7 +18,7 @@ You can provide a different implementation. See [ServerManager](https://github.c
  
 The server endpoint, for example `http://example.org:8080`, must returns specific metadata, such as
 
-```
+``` Kotlin
 {
     "url": "http://example.org:8080/path/to/binary",
     "sapclassName": "your.sap.class.Name",
@@ -29,9 +29,13 @@ The server endpoint, for example `http://example.org:8080`, must returns specifi
 }
 ```
 
+The Service Access Point Class Name (`sapclassName`) is the name of the class inside the library 
+that will be read using reflection. This class methods represent all available functionality of the library.
+
+
 To download and use the library exposed by the server
 
-```
+``` Kotlin
 val ksll = Ksll(baseContext, RESTManager())
 
 ksll.load("http://example.org:8080", { remoteLib ->
@@ -46,7 +50,7 @@ ksll.load("http://example.org:8080", { remoteLib ->
 
 Also using extension function
 
-```
+``` Kotlin
 val ksll = Ksll(baseContext, RESTManager())
 
 "http://example.org:8080".load(ksll, { remoteLib ->
@@ -61,14 +65,14 @@ val ksll = Ksll(baseContext, RESTManager())
 
 Callbacks
 
-```
+``` Kotlin
 success: (lib: Lib) -> Unit
 failure: (cause: Failure) -> Unit
 ```
 
 Handle different types of error
 
-```
+``` Kotlin
 ﻿ksll.load("http://192.168.1.150:8080", ... , { error ->
         val msg = when(error){
             Failure.NotTrustedData -> "Signature verification failed. Library not trusted."
@@ -85,12 +89,12 @@ Handle different types of error
 
 Once a library `RemoteLib`/`Lib` is retrieved, to load the invokable methods
 
-```
-remoteLib.require(ksll){obj, methods ->
+``` Kotlin
+remoteLib.require(ksll){ obj, methods ->
 
 }
 
-lib.require(ksll){obj, methods ->
+lib.require(ksll){ obj, methods ->
 
 }
 ```
