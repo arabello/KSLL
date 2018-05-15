@@ -8,7 +8,6 @@ package it.matteopellegrino.ksll
  */
 enum class Failure{
     NotTrustedData,
-    CannotLoadSAPClass,
     HTTPRequestError,
     MalformedMetaData
 }
